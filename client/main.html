@@ -1,5 +1,6 @@
+
 <head>
-  <title>E-Learning_Demo</title>
+	<title>E-Learning_Demo</title>
 </head>
 
 <body>
@@ -15,6 +16,7 @@
 		
 		{{/each}}
 	</ul>
+		
 		{{#if loginMode}}	
 			{{> temporary_login}}
 		{{else}}
@@ -49,23 +51,32 @@
 			  </shape>
 			</transform>
 
-			<!-- boxes -->
+
+		<transform DEF="lavagna" id="lavagna_id" translation="0 2 0" scale="0.1 0.1 0.1" rotation="0 1 0 -1.5708">
+       	 		<inline nameSpaceName="lavagna" 
+            			mapDEFToID="true"
+            			onclick='Meteor.call("quiz");' 
+                  	 	url="/x3d/lavagna.x3d">
+                  	 
+           		</inline>
+     		</transform>	
 			
-	  	
-	    
+	  	<group id="all_players">
 	    {{#each players}}
-	  		<!-- scale 0.5 because default size of box is 2 units on a side -->
-	  		<transform translation="{{x}} {{y}} {{z}}" scale="0.5 0.5 0.5">
-			    <shape id="{{_id}}">
-			      <appearance>
-			      	<!-- could be improved to have texture and not just color -->
-			        <material diffuseColor="{{color}}" ambientIntensity="0.1"
-			        	shininess="0"></material>
-			      </appearance>
-			      <box></box>
-			    </shape>
-			  </transform>
+	    	<transform id="{{_id}}" translation="{{x}} {{y}} {{z}}" scale="0.5 0.5 0.5">
+       	 		<inline nameSpaceName="{{_id}}" 
+            			mapDEFToID="true"
+            			onload='Meteor.call("all_players_color", "{{_id}}", "{{color}}");'
+                  	 	url="/x3d/LEGO_MAN.x3d">
+                  	 
+           		</inline>
+     		</transform>	
+     		
 	    {{/each}}
+	    
+	  </group> 
+	  
 	  </scene>
 	</x3d>
 </body>
+

@@ -15,17 +15,39 @@ Session.set("color", "brown");
 // set initial mode to view
 Session.set("mode", "login");
 
+
+
+
+Meteor.methods({
+  all_players_color: function (id, color) {
+  	console.log(id+' '+color);
+  	document.getElementById(id+'__Legs').setAttribute('diffuseColor', color);
+  	/*
+  	Players.find().forEach( function (p) {
+  			
+  			document.getElementById(p._id+'__Legs').setAttribute('diffuseColor', p.color);
+  		});
+  */
+  },
+	
+  quiz: function () {
+    console.log("Quiz");
+     
+  }
+});
+
+
+
+
 // this uses the Shark branch of Meteor, hence the UI namespace
 UI.body.helpers({
 
-players: function () {
+
+	players: function () {
     	return Players.find();
   },
-  // all boxes in collection
-  // XXX should at some point be scoped to user
-  boxes: function () {
-    return Boxes.find();
-  },
+  
+  
   // list of colors for color picker
   colors: function () {
     return _.map(_.keys(colors), function (name) {
@@ -47,22 +69,91 @@ players: function () {
 
 // events on the dialog with lots of buttons
 UI.body.events({
+	
+	
   "click .clear-boxes": function () {
     Meteor.call("clearBoxes");
   },
   "click .swatch": function () {
     Session.set("color", this.name);
   },
-  "mousedown shape": function (event) {
+  "mousedown transform": function (event) {
     if (Session.get("mode") === "login") {
-    	alert("Ti devi loggare");
+    	console.log("Ti devi loggare");
     } else {
       if (event.button === 1) {
-        alert(event.currentTarget.id);
+        console.log(event.currentTarget.id);
       } else if (event.button === 4 || event.button === 2) {
         
         
       }
     }
+  },
+   'keydown': function(event) {
+   if (Session.get("mode") != "login") {
+    event.preventDefault();
+    
+    console.log(event.which);
+    switch (event.which) {
+				// TRASLAZIONE
+				case 38: // freccia su
+					z = String(parseFloat(Players.findOne(Session.get('user_id')).z) - 0.5);
+    				Players.update(
+    					{ _id: Session.get('user_id') }, 
+    					{ $set: //consente di modificare sono il parametro selezionato 
+    						{
+    							z: z, 
+    						}
+    					}
+    				)
+					break;
+				
+				case 40: // freccia giù	
+					z = String(parseFloat(Players.findOne(Session.get('user_id')).z) + 0.5);
+    				Players.update(
+    					{ _id: Session.get('user_id') }, 
+    					{ $set: //consente di modificare sono il parametro selezionato 
+    						{
+    							z: z, 
+    						}
+    					}
+    				)
+					break;
+				
+				case 37: //freccia sinistra	
+    				x = String(parseFloat(Players.findOne(Session.get('user_id')).x) - 0.5);
+    				Players.update(
+    					{ _id: Session.get('user_id') }, 
+    					{ $set: //consente di modificare sono il parametro selezionato 
+    						{
+    							x: x, 
+    						}
+    					}
+    				)	
+					break;
+					
+				case 39: // freccia destra
+					x = String(parseFloat(Players.findOne(Session.get('user_id')).x) + 0.5); 
+    				Players.update(
+    					{ _id: Session.get('user_id') }, 
+    					{ $set: //consente di modificare sono il parametro selezionato 
+    						{
+    							x: x, 
+    						}
+    					}
+    				)	
+					break;
+					
+				// ROTAZIONE
+				case 90: // Z
+					
+					break;
+					
+				case 67: // C
+					
+					break;
+			
+			}	
+	}
   }
 });

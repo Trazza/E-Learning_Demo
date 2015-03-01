@@ -40,7 +40,7 @@ Template.temporary_login.events({
  				var x = "3";
  				var y = "1";
  				var z = "1";
- 				
+ 				var color = Random.choice(colors[Session.get("color")]);
 				
 				Players.insert({  	//inserisco nome utente e id nella collection
  	        		nome: username,
@@ -48,15 +48,17 @@ Template.temporary_login.events({
     	      		x: x,
     	      		y: y,
     	      		z: z,
-    	      		color: Random.choice(colors[Session.get("color")])
+    	      		color: color
         		});
 			
 				//aggiungo la box nell'x3d
       			//$("#scena_x3d").append("<transform DEF='BOX_red' id='BOX"+user_id+"' translation='"+Players.findOne(Session.get('user_id')).x+" "+Players.findOne(Session.get('user_id')).y+" "+Players.findOne(Session.get('user_id')).z+"' rotation='0 0 1 0' > <shape> <appearance> <material diffuseColor='1 0 0'></material> </appearance> <box size='2 2 2'></box> </shape> </transform>		");
     	   		
-    	   		$("#nome_utente_log").append("BENVENUTO "+ username);
+    	   		//$("#nome_utente_log").append("BENVENUTO "+ username);
     	   	
-    	   		
+    	   		//document.getElementById('AAA_id__Legs').setAttribute('diffuseColor', color);
+    	   		document.getElementById('lavagna__MA_Molbert').setAttribute('diffuseColor', '0 1 0');
+    	   		//Tracker.flush();
 			}
        	}
        	
